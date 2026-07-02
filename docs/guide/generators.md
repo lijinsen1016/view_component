@@ -2,6 +2,7 @@
 layout: default
 title: 生成器
 parent: 使用指南
+nav_order: 5
 ---
 
 # 生成器

@@ -2,6 +2,7 @@
 layout: default
 title: 测试
 parent: 使用指南
+nav_order: 12
 ---
 
 # 测试

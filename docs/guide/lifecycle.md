@@ -2,6 +2,7 @@
 layout: default
 title: 生命周期
 parent: 使用指南
+nav_order: 8
 ---
 
 # 生命周期

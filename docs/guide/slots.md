@@ -2,6 +2,7 @@
 layout: default
 title: 插槽
 parent: 使用指南
+nav_order: 10
 ---
 
 # 插槽

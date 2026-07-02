@@ -2,6 +2,7 @@
 layout: default
 title: 辅助方法
 parent: 使用指南
+nav_order: 6
 ---
 
 # 辅助方法

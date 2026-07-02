@@ -2,6 +2,7 @@
 layout: default
 title: 配置
 parent: 使用指南
+nav_order: 4
 ---
 
 # 配置

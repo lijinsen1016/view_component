@@ -2,6 +2,7 @@
 layout: default
 title: 翻译
 parent: 使用指南
+nav_order: 13
 ---
 
 # 翻译

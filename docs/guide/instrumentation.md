@@ -2,6 +2,7 @@
 layout: default
 title: 插桩
 parent: 使用指南
+nav_order: 7
 ---
 
 # 插桩
