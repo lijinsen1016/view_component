@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Configuration
-parent: How-to guide
+title: 配置
+parent: 使用指南
 ---
 
-# Configuration
+# 配置
 
-To configure ViewComponent, set options in `config/ENVIRONMENT.rb`:
+要配置 ViewComponent，请在 `config/ENVIRONMENT.rb` 中设置相关选项：
 
 ```ruby
 MyApplication.configure do
@@ -16,4 +16,4 @@ MyApplication.configure do
 end
 ```
 
-For a list of available options, see [/api](/api#configuration).
+可用选项列表请参见 [/api](/api#configuration)。

@@ -1,17 +1,17 @@
 ---
 layout: default
-title: Conditional rendering
-parent: How-to guide
+title: 条件渲染
+parent: 使用指南
 ---
 
-# Conditional rendering
+# 条件渲染
 
 Since 1.8.0
 {: .label }
 
-Components can implement a `#render?` method to be called after initialization to determine if the component should render.
+组件可以实现 `#render?` 方法，该方法会在初始化之后被调用，以决定组件是否应当渲染。
 
-Traditionally, the logic for whether to render a view could go in either the component template:
+传统上，是否渲染某个视图的逻辑既可以放在组件模板中：
 
 ```erb
 <% if user.requires_confirmation? %>
@@ -19,7 +19,7 @@ Traditionally, the logic for whether to render a view could go in either the com
 <% end %>
 ```
 
-or the view that renders the component:
+也可以放在渲染该组件的视图里：
 
 ```erb
 <% if current_user.requires_confirmation? %>
@@ -27,7 +27,7 @@ or the view that renders the component:
 <% end %>
 ```
 
-Using the `#render?` hook simplifies the view:
+使用 `#render?` 钩子可以简化视图：
 
 ```ruby
 class ConfirmEmailComponent < ViewComponent::Base
@@ -51,4 +51,4 @@ end
 <%= render(ConfirmEmailComponent.new(user: current_user)) %>
 ```
 
-_To assert whether a component has been rendered, use `assert_component_rendered` / `refute_component_rendered` from `ViewComponent::TestHelpers`._
+_要断言组件是否已被渲染，请使用 `ViewComponent::TestHelpers` 中的 `assert_component_rendered` / `refute_component_rendered`。_

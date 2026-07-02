@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Helpers
-parent: How-to guide
+title: 辅助方法
+parent: 使用指南
 ---
 
-# Helpers
+# 辅助方法
 
-Helpers must be included to be used:
+辅助方法必须先被引入（include）才能使用：
 
 ```ruby
 module IconHelper
@@ -24,12 +24,12 @@ class UserComponent < ViewComponent::Base
 end
 ```
 
-## Proxy
+## 代理
 
 Since 1.5.0
 {: .label }
 
-Or, access helpers through the `helpers` proxy:
+或者，通过 `helpers` 代理来访问辅助方法：
 
 ```ruby
 class UserComponent < ViewComponent::Base
@@ -39,7 +39,7 @@ class UserComponent < ViewComponent::Base
 end
 ```
 
-Which can be used with `delegate`:
+它可以配合 `delegate` 使用：
 
 ```ruby
 class UserComponent < ViewComponent::Base
@@ -51,19 +51,19 @@ class UserComponent < ViewComponent::Base
 end
 ```
 
-## Nested URL helpers
+## 嵌套 URL 辅助方法
 
-Rails nested URL helpers implicitly depend on the current `request` in certain cases. Since ViewComponent is built to enable reusing components in different contexts, nested URL helpers should be passed their options explicitly:
+Rails 的嵌套 URL 辅助方法在某些情况下会隐式依赖当前的 `request`。由于 ViewComponent 的设计初衷是让组件能够在不同上下文中复用，因此应当向嵌套 URL 辅助方法显式传入选项：
 
 ```ruby
 # bad
-edit_user_path # implicitly depends on current request to provide `user`
+edit_user_path # 隐式依赖当前 request 来提供 `user`
 
 # good
 edit_user_path(user: current_user)
 ```
 
-Alternatively, use the `helpers` proxy:
+或者使用 `helpers` 代理：
 
 ```ruby
 helpers.edit_user_path

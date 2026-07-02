@@ -1,62 +1,62 @@
 ---
 layout: default
-title: Instrumentation
-parent: How-to guide
+title: 插桩
+parent: 使用指南
 ---
 
-# Instrumentation
+# 插桩
 
 Since 2.34.0
 {: .label }
 
-To enable ActiveSupport notifications, use the `instrumentation_enabled` option:
+要启用 ActiveSupport notifications，请使用 `instrumentation_enabled` 选项：
 
 ```ruby
 # config/application.rb
-# Enable ActiveSupport notifications for all ViewComponents
+# 为所有 ViewComponent 启用 ActiveSupport notifications
 config.view_component.instrumentation_enabled = true
 ```
 
-Subscribe to the event:
+订阅该事件：
 
 ```ruby
-ActiveSupport::Notifications.subscribe("render.view_component") do |event| # or !render.view_component
+ActiveSupport::Notifications.subscribe("render.view_component") do |event| # 或 !render.view_component
   event.name    # => "render.view_component"
   event.payload # => { name: "MyComponent", identifier: "/Users/mona/project/app/components/my_component.rb", view_identifier: "/Users/mona/project/app/components/my_component.html.erb" }
 end
 ```
 
-_Note: Enabling instrumentation negatively impacts the performance of ViewComponent._
+_注意：启用插桩会降低 ViewComponent 的性能。_
 
-## Compile instrumentation
+## 编译插桩
 
 Since 4.8.0
 {: .label }
 
-ViewComponent also instruments eager compilation at boot time via the `compile.view_component` event. This event is always emitted (no configuration needed) when `config.eager_load` is `true`:
+ViewComponent 还会通过 `compile.view_component` 事件对启动时的预编译进行插桩。当 `config.eager_load` 为 `true` 时，该事件总是会发送（无需任何配置）：
 
 ```ruby
 ActiveSupport::Notifications.subscribe("compile.view_component") do |event|
   event.name     # => "compile.view_component"
-  event.duration # => 123.45 (milliseconds)
+  event.duration # => 123.45（毫秒）
 end
 ```
 
-## Viewing instrumentation sums in the browser developer tools
+## 在浏览器开发者工具中查看插桩汇总
 
-When using `render.view_component` with `config.server_timing = true` (default in development) in Rails 7, the browser developer tools display the sum total timing information in Network > Timing under the key `render.view_component`.
+在 Rails 7 中，当 `render.view_component` 配合 `config.server_timing = true`（开发环境默认开启）使用时，浏览器开发者工具会在 Network > Timing 下以 `render.view_component` 为键显示总耗时信息。
 
 ![Browser showing the Server Timing data in the browser dev tools](../images/viewing_instrumentation_sums_in_browser_dev_tools.png "Server Timing data in the browser dev tools")
 
-## Viewing instrumentation breakdowns in rack-mini-profiler
+## 在 rack-mini-profiler 中查看插桩细分
 
-The [rack-mini-profiler gem](https://rubygems.org/gems/rack-mini-profiler) is a popular tool for profiling rack-based Ruby applications.
+[rack-mini-profiler gem](https://rubygems.org/gems/rack-mini-profiler) 是用于对基于 rack 的 Ruby 应用进行性能分析的常用工具。
 
-To profile ViewComponent rendering alongside views and partials:
+要对 ViewComponent 渲染与视图及局部模板一同进行性能分析：
 
 ```ruby
 # config/environments/development.rb
-# Profile rendering of ViewComponents
+# 对 ViewComponent 的渲染进行性能分析
 Rack::MiniProfilerRails.subscribe("render.view_component") do |_name, start, finish, _id, payload|
   Rack::MiniProfilerRails.render_notification_handler(
     Rack::MiniProfilerRails.shorten_identifier(payload[:identifier]),

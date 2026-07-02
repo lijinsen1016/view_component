@@ -1,15 +1,15 @@
 ---
 layout: default
-title: Collections
-parent: How-to guide
+title: 集合
+parent: 使用指南
 ---
 
-# Collections
+# 集合
 
 Since 2.1.0
 {: .label }
 
-Like [Rails partials](https://guides.rubyonrails.org/layouts_and_rendering.html#rendering-collections), it's possible to render a collection with ViewComponents, using `with_collection`:
+与 [Rails 局部模板](https://guides.rubyonrails.org/layouts_and_rendering.html#rendering-collections)类似，可以使用 `with_collection` 通过 ViewComponent 渲染集合：
 
 ```erb
 <%= render(ProductComponent.with_collection(@products)) %>
@@ -23,11 +23,11 @@ class ProductComponent < ViewComponent::Base
 end
 ```
 
-[By default](https://github.com/viewcomponent/view_component/blob/89f8fab4609c1ef2467cf434d283864b3c754473/lib/view_component/base.rb#L249), the component name is used to define the parameter passed into the component from the collection.
+[默认情况下](https://github.com/viewcomponent/view_component/blob/89f8fab4609c1ef2467cf434d283864b3c754473/lib/view_component/base.rb#L249)，会以组件名来命名从集合传入组件的参数。
 
 ## `with_collection_parameter`
 
-Use `with_collection_parameter` to change the name of the collection parameter:
+使用 `with_collection_parameter` 可更改集合参数的名称：
 
 ```ruby
 class ProductComponent < ViewComponent::Base
@@ -39,9 +39,9 @@ class ProductComponent < ViewComponent::Base
 end
 ```
 
-## Additional arguments
+## 额外参数
 
-Additional arguments besides the collection are passed to each component instance:
+除集合之外的额外参数会被传递给每个组件实例：
 
 ```erb
 <%= render(ProductComponent.with_collection(@products, notice: "hi")) %>
@@ -65,12 +65,12 @@ class ProductComponent < ViewComponent::Base
 end
 ```
 
-## Collection counter
+## 集合计数器
 
 Since 2.5.0
 {: .label }
 
-ViewComponent defines a counter variable matching the parameter name above, followed by `_counter`. To access the variable, add it to `initialize` as an argument:
+ViewComponent 会定义一个与上面参数名同名并后缀 `_counter` 的计数器变量。要访问该变量，请在 `initialize` 中将其作为参数添加：
 
 ```ruby
 class ProductComponent < ViewComponent::Base
@@ -87,14 +87,14 @@ class ProductComponent < ViewComponent::Base
 end
 ```
 
-## Collection iteration context
+## 集合迭代上下文
 
 Since 2.33.0
 {: .label }
 
-ViewComponent defines an iteration variable matching the parameter name above, followed by `_iteration`. This gives contextual information about the iteration to components within the collection (`#size`, `#index`, `#first?`, and `#last?`).
+ViewComponent 会定义一个与上面参数名同名并后缀 `_iteration` 的迭代变量。它会为集合中的组件提供关于迭代的上下文信息（`#size`、`#index`、`#first?` 和 `#last?`）。
 
-To access the variable, add it to `initialize` as an argument:
+要访问该变量，请在 `initialize` 中将其作为参数添加：
 
 ```ruby
 class ProductComponent < ViewComponent::Base
@@ -111,15 +111,15 @@ class ProductComponent < ViewComponent::Base
 end
 ```
 
-## Spacer components
+## 间隔组件
 
 Since 3.20.0
 {: .label }
 
-Set `:spacer_component` as an instantiated component to render between items:
+将 `:spacer_component` 设置为一个已实例化的组件，它会在各项之间被渲染：
 
 ```erb
 <%= render(ProductComponent.with_collection(@products, spacer_component: SpacerComponent.new)) %>
 ```
 
-Which will render the SpacerComponent component between `ProductComponent`s.
+这会在各 `ProductComponent` 之间渲染 SpacerComponent 组件。

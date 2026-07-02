@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Previews
-parent: How-to guide
+title: 预览
+parent: 使用指南
 ---
 
-# Previews
+# 预览
 
-`ViewComponent::Preview`, like `ActionMailer::Preview`, provides a quick way to preview components in isolation:
+`ViewComponent::Preview` 与 `ActionMailer::Preview` 类似，提供了一种以隔离方式快速预览组件的途径：
 
 ```ruby
 # test/components/previews/example_component_preview.rb
@@ -25,16 +25,16 @@ class ExampleComponentPreview < ViewComponent::Preview
 end
 ```
 
-Then access the resulting previews at:
+然后通过以下地址访问生成的预览：
 
 * `/rails/view_components/example_component/with_default_title`
 * `/rails/view_components/example_component/with_content_block`
 
-_For a more interactive experience, consider using [Lookbook](https://lookbook.build) or [ViewComponent::Storybook](https://github.com/jonspalmer/view_component_storybook)._
+_若希望获得更具交互性的体验，可考虑使用 [Lookbook](https://lookbook.build) 或 [ViewComponent::Storybook](https://github.com/jonspalmer/view_component_storybook)。_
 
-## Passing parameters
+## 传参
 
-Set dynamic values from URL parameters by setting them as arguments:
+通过将动态值设为参数，即可从 URL 参数中获取它们：
 
 ```ruby
 # test/components/previews/example_component_preview.rb
@@ -45,14 +45,14 @@ class ExampleComponentPreview < ViewComponent::Preview
 end
 ```
 
-Then pass in a value: `/rails/view_components/example_component/with_dynamic_title?title=Custom+title`.
+然后传入一个值：`/rails/view_components/example_component/with_dynamic_title?title=Custom+title`。
 
-## Previews as test cases
+## 将预览作为测试用例
 
 Since 2.56.0
 {: .label }
 
-Use `render_preview(name)` to render previews in ViewComponent unit tests:
+使用 `render_preview(name)` 可在 ViewComponent 单元测试中渲染预览：
 
 ```ruby
 class ExampleComponentTest < ViewComponent::TestCase
@@ -64,7 +64,7 @@ class ExampleComponentTest < ViewComponent::TestCase
 end
 ```
 
-Parameters can also be passed:
+也可以传入参数：
 
 ```ruby
 class ExampleComponentTest < ViewComponent::TestCase
@@ -76,7 +76,7 @@ class ExampleComponentTest < ViewComponent::TestCase
 end
 ```
 
-By default, the preview class is inferred from the name of the current test file. Use `from` to set it explicitly:
+默认情况下，预览类会根据当前测试文件的名称推断。使用 `from` 可显式指定：
 
 ```ruby
 class ExampleTest < ViewComponent::TestCase
@@ -88,15 +88,15 @@ class ExampleTest < ViewComponent::TestCase
 end
 ```
 
-## Helpers
+## 辅助方法
 
-The `ViewComponent::Preview` base class includes
-[`ActionView::Helpers::TagHelper`](https://api.rubyonrails.org/classes/ActionView/Helpers/TagHelper.html), which provides the [`tag`](https://api.rubyonrails.org/classes/ActionView/Helpers/TagHelper.html#method-i-tag)
-and [`content_tag`](https://api.rubyonrails.org/classes/ActionView/Helpers/TagHelper.html#method-i-content_tag) view helper methods.
+`ViewComponent::Preview` 基类包含了
+[`ActionView::Helpers::TagHelper`](https://api.rubyonrails.org/classes/ActionView/Helpers/TagHelper.html)，它提供了 [`tag`](https://api.rubyonrails.org/classes/ActionView/Helpers/TagHelper.html#method-i-tag)
+和 [`content_tag`](https://api.rubyonrails.org/classes/ActionView/Helpers/TagHelper.html#method-i-content_tag) 视图辅助方法。
 
-## Layouts
+## 布局
 
-Previews render with the application layout by default, but can use a specific layout with the `layout` option:
+预览默认使用应用布局渲染，但可以通过 `layout` 选项使用特定布局：
 
 ```ruby
 # test/components/previews/example_component_preview.rb
@@ -105,35 +105,35 @@ class ExampleComponentPreview < ViewComponent::Preview
 end
 ```
 
-To set a custom layout for individual previews and the previews index page, set: `default_preview_layout`:
+要为单个预览及预览索引页设置自定义布局，请设置 `default_preview_layout`：
 
 ```ruby
 # config/application.rb
-# Set the default layout to app/views/layouts/component_preview.html.erb
+# 将默认布局设为 app/views/layouts/component_preview.html.erb
 config.view_component.previews.default_layout = "component_preview"
 ```
 
-## Preview paths
+## 预览路径
 
-Preview classes live in `test/components/previews`, which can be configured using the `previews.paths` option:
+预览类位于 `test/components/previews`，可使用 `previews.paths` 选项配置：
 
 ```ruby
 # config/application.rb
 config.view_component.previews.paths << "#{Rails.root}/lib/component_previews"
 ```
 
-## Previews route
+## 预览路由
 
-Previews are served from `/rails/view_components` by default. To use a different endpoint, set the `previews.route` option:
+预览默认由 `/rails/view_components` 提供。要使用其他端点，请设置 `previews.route` 选项：
 
 ```ruby
 # config/application.rb
 config.view_component.previews.route = "/previews"
 ```
 
-## Preview templates
+## 预览模板
 
-Given a preview `test/components/previews/cell_component_preview.rb`, template files can be defined at `test/components/previews/cell_component_preview/`:
+对于预览 `test/components/previews/cell_component_preview.rb`，模板文件可定义在 `test/components/previews/cell_component_preview/` 下：
 
 ```ruby
 # test/components/previews/cell_component_preview.rb
@@ -154,8 +154,8 @@ end
 </div>
 ```
 
-To use a different location for preview templates, pass the `template` argument:
-(the path should be relative to `config.view_component.previews.paths`):
+要为预览模板使用其他位置，请传入 `template` 参数：
+（路径应相对于 `config.view_component.previews.paths`）
 
 ```ruby
 # test/components/previews/cell_component_preview.rb
@@ -166,7 +166,7 @@ class CellComponentPreview < ViewComponent::Preview
 end
 ```
 
-Values from `params` can be accessed through `locals`:
+来自 `params` 的值可通过 `locals` 访问：
 
 ```ruby
 # test/components/previews/cell_component_preview.rb
@@ -180,18 +180,18 @@ class CellComponentPreview < ViewComponent::Preview
 end
 ```
 
-Which enables passing in a value: `/rails/view_components/cell_component/default?title=Custom+title&subtitle=Another+subtitle`.
+这样即可传入值：`/rails/view_components/cell_component/default?title=Custom+title&subtitle=Another+subtitle`。
 
-## Configuring preview controller
+## 配置预览控制器
 
-Extend previews to add authentication, authorization, before actions, etc. using the `previews.controller` option:
+使用 `previews.controller` 选项扩展预览，以添加认证、授权、before action 等：
 
 ```ruby
 # config/application.rb
 config.view_component.previews.controller = "MyPreviewController"
 ```
 
-Then include `PreviewActions` in the controller:
+然后在控制器中引入 `PreviewActions`：
 
 ```ruby
 class MyPreviewController < ActionController::Base
@@ -199,18 +199,18 @@ class MyPreviewController < ActionController::Base
 end
 ```
 
-## Enabling previews
+## 启用预览
 
-Previews are enabled by default in test and development environments. To enable or disable previews, use the `previews.enabled` option:
+预览在测试和开发环境中默认启用。要启用或禁用预览，请使用 `previews.enabled` 选项：
 
 ```ruby
 # config/environments/test.rb
 config.view_component.previews.enabled = false
 ```
 
-## Use with RSpec
+## 配合 RSpec 使用
 
-When using previews with RSpec,  replace `test/components` with `spec/components` and update `previews.paths`:
+在 RSpec 中使用预览时，请将 `test/components` 替换为 `spec/components`，并更新 `previews.paths`：
 
 ```ruby
 # config/application.rb

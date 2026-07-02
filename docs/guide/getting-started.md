@@ -1,32 +1,32 @@
 ---
 layout: default
-title: Getting started
-parent: How-to guide
+title: 快速入门
+parent: 使用指南
 nav_order: 1
 ---
 
-# Getting started
+# 快速入门
 
-## Conventions
+## 约定
 
-- Components are subclasses of `ViewComponent::Base` and live in `app/components`. It's common practice to create and inherit from an `ApplicationComponent` that's a subclass of `ViewComponent::Base`.
-- Component names end in -`Component`.
-- Component module names are plural, as for controllers and jobs: `Users::AvatarComponent`
-- Name components for what they render, not what they accept. (`AvatarComponent` instead of `UserComponent`)
+- 组件是 `ViewComponent::Base` 的子类，位于 `app/components` 目录下。常见做法是创建一个继承自 `ViewComponent::Base` 的 `ApplicationComponent`，然后让其他组件继承它。
+- 组件名以 -`Component` 结尾。
+- 组件的模块名使用复数形式，与控制器和 job 一致：`Users::AvatarComponent`
+- 组件的命名应体现它渲染的是什么，而非它接收的是什么。（应使用 `AvatarComponent` 而非 `UserComponent`）
 
-## Installation
+## 安装
 
-In `Gemfile`, add:
+在 `Gemfile` 中添加：
 
 ```ruby
 gem "view_component"
 ```
 
-## Quick start
+## 快速上手
 
-Use the component generator to create a new ViewComponent.
+使用组件生成器创建一个新的 ViewComponent。
 
-The generator accepts a component name and a list of arguments:
+生成器接受一个组件名和一组参数：
 
 ```console
 bin/rails generate view_component:component Example title
@@ -37,11 +37,11 @@ bin/rails generate view_component:component Example title
       create  app/components/example_component.html.erb
 ```
 
-Available options to customize the generator are documented on the [Generators](/guide/generators.html) page.
+用于自定义生成器的可用选项详见 [生成器](/guide/generators.html) 页面。
 
-## Implementation
+## 实现
 
-A ViewComponent is a Ruby class that inherits from `ViewComponent::Base`:
+ViewComponent 是一个继承自 `ViewComponent::Base` 的 Ruby 类：
 
 ```ruby
 class ExampleComponent < ViewComponent::Base
@@ -55,9 +55,9 @@ class ExampleComponent < ViewComponent::Base
 end
 ```
 
-Content passed to a ViewComponent as a block is captured and assigned to the `content` accessor.
+以 block 形式传给 ViewComponent 的内容会被捕获并赋给 `content` 访问器。
 
-Rendered in a view as:
+在视图中渲染：
 
 ```erb
 <%= render(ExampleComponent.new(title: "my title")) do %>
@@ -65,7 +65,7 @@ Rendered in a view as:
 <% end %>
 ```
 
-Returning:
+返回：
 
 ```html
 <span title="my title">Hello, World!</span>
@@ -76,15 +76,15 @@ Returning:
 Since 2.31.0
 {: .label }
 
-String content can also be passed to a ViewComponent by calling `#with_content`:
+也可以通过调用 `#with_content` 将字符串内容传给 ViewComponent：
 
 ```erb
 <%= render(ExampleComponent.new(title: "my title").with_content("Hello, World!")) %>
 ```
 
-## Rendering from controllers
+## 在控制器中渲染
 
-It's also possible to render ViewComponents in controllers:
+也可以在控制器中渲染 ViewComponent：
 
 ```ruby
 def show
@@ -92,9 +92,9 @@ def show
 end
 ```
 
-_Note: Content can't be passed to a component via a block in controllers. Instead, use `with_content`._
+_注意：在控制器中无法通过 block 向组件传递内容。请改用 `with_content`。_
 
-When using turbo frames with [turbo-rails](https://github.com/hotwired/turbo-rails), set `content_type` as `text/html`:
+当配合 [turbo-rails](https://github.com/hotwired/turbo-rails) 使用 turbo frame 时，需将 `content_type` 设为 `text/html`：
 
 ```ruby
 def create
@@ -102,28 +102,28 @@ def create
 end
 ```
 
-### Rendering ViewComponents to strings inside controller actions
+### 在控制器动作中将 ViewComponent 渲染为字符串
 
-When rendering the same component multiple times for later reuse, use `render_in`:
+当需要多次渲染同一个组件以便后续复用时，请使用 `render_in`：
 
 ```rb
 class PagesController < ApplicationController
   def index
-    # Doesn't work: triggers a `AbstractController::DoubleRenderError`
+    # 不可行：会触发 `AbstractController::DoubleRenderError`
     # @reusable_icon = render IconComponent.new("close")
 
-    # Doesn't work: renders the whole index view as a string
+    # 不可行：会把整个 index 视图渲染为字符串
     # @reusable_icon = render_to_string IconComponent.new("close")
 
-    # Works: renders the component as a string
+    # 可行：将组件渲染为字符串
     @reusable_icon = IconComponent.new("close").render_in(view_context)
   end
 end
 ```
 
-### Rendering ViewComponents outside of the view context
+### 在视图上下文之外渲染 ViewComponent
 
-To render ViewComponents outside of the view context (such as in a background job, markdown processor, etc), instantiate a Rails controller:
+要在视图上下文之外渲染 ViewComponent（例如在后台 job、markdown 处理器等中），请实例化一个 Rails 控制器：
 
 ```ruby
 ApplicationController.new.view_context.render(MyComponent.new)

@@ -1,17 +1,17 @@
 ---
 layout: default
-title: Lifecycle
-parent: How-to guide
+title: 生命周期
+parent: 使用指南
 ---
 
-# Lifecycle
+# 生命周期
 
 ## `#before_render`
 
 Since 2.8.0
 {: .label }
 
-Define a `before_render` method to be called before a component is rendered, when `helpers` is able to be used:
+定义 `before_render` 方法，它会在组件渲染之前被调用，此时可以使用 `helpers`：
 
 ```ruby
 # app/components/example_component.rb
@@ -27,7 +27,7 @@ end
 Since 4.0.0.rc2
 {: .label }
 
-Define an `around_render` method to be called around the rendering of a component:
+定义 `around_render` 方法，让它包覆组件的渲染过程：
 
 ```ruby
 # app/components/example_component.rb

@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Testing
-parent: How-to guide
+title: 测试
+parent: 使用指南
 ---
 
-# Testing
+# 测试
 
-Unit test components using the `render_inline` test helper, asserting against the rendered output:
+使用 `render_inline` 测试辅助方法对组件进行单元测试，并对渲染输出进行断言：
 
 ```ruby
 require "test_helper"
@@ -18,21 +18,21 @@ class ExampleComponentTest < ViewComponent::TestCase
     assert_component_rendered
 
     assert_selector("span[title='my title']", text: "Hello, World!")
-    # or, to just assert against the text:
+    # 或者只断言文本：
     assert_text("Hello, World!")
   end
 end
 ```
 
-(Capybara matchers are available if the gem is installed)
+（若安装了 capybara gem，则可使用 Capybara 的匹配器）
 
-_Note: `assert_selector` only matches on visible elements by default. To match on elements regardless of visibility, add `visible: false`. See the [Capybara documentation](https://rubydoc.info/github/jnicklas/capybara/Capybara/Node/Matchers) for more details._
+_注意：`assert_selector` 默认只匹配可见元素。要不论可见性都进行匹配，请添加 `visible: false`。更多细节请参见 [Capybara 文档](https://rubydoc.info/github/jnicklas/capybara/Capybara/Node/Matchers)。_
 
-For debugging purposes, the `rendered_content` test helper outputs the rendered HTML.
+出于调试目的，`rendered_content` 测试辅助方法会输出渲染后的 HTML。
 
-## Use with RSpec
+## 配合 RSpec 使用
 
-To enable ViewComponent test helpers in RSpec, add:
+要在 RSpec 中启用 ViewComponent 测试辅助方法，请添加：
 
 ```ruby
 # spec/rails_helper.rb
@@ -47,7 +47,7 @@ RSpec.configure do |config|
 end
 ```
 
-## Testing Slots
+## 测试插槽
 
 ```ruby
 def test_render_component
@@ -65,12 +65,12 @@ def test_render_component
 end
 ```
 
-## Previews as test cases
+## 将预览作为测试用例
 
 Since 2.56.0
 {: .label }
 
-Use `render_preview(name)` to render previews in ViewComponent unit tests:
+使用 `render_preview(name)` 可在 ViewComponent 单元测试中渲染预览：
 
 ```ruby
 class ExampleComponentTest < ViewComponent::TestCase
@@ -82,9 +82,9 @@ class ExampleComponentTest < ViewComponent::TestCase
 end
 ```
 
-## Testing components with behaviors
+## 测试带交互行为的组件
 
-To test ViewComponents with behaviors, visit a preview in a system test:
+要测试带交互行为的 ViewComponent，可在系统测试中访问某个预览：
 
 ```ruby
 class MyComponentSystemTest < ActionDispatch::SystemTestCase
@@ -98,9 +98,9 @@ class MyComponentSystemTest < ActionDispatch::SystemTestCase
 end
 ```
 
-## Best practices
+## 最佳实践
 
-Prefer testing the rendered output over individual methods:
+优先对渲染输出进行测试，而非对单个方法：
 
 ```ruby
 # Good
@@ -110,9 +110,9 @@ assert_selector(".Label", text: "My label")
 assert_equal MyComponent.new.label, "My label"
 ```
 
-## Without `capybara`
+## 不使用 `capybara`
 
-In the absence of `capybara`, assert against the return value of `render_inline`, which is an instance of `Nokogiri::HTML::DocumentFragment`:
+在没有 `capybara` 的情况下，可对 `render_inline` 的返回值进行断言，它是 `Nokogiri::HTML::DocumentFragment` 的实例：
 
 ```ruby
 def test_render_component
@@ -122,9 +122,9 @@ def test_render_component
 end
 ```
 
-## Slots
+## 插槽
 
-To test components that use Slots:
+要测试使用插槽的组件：
 
 ```ruby
 def test_renders_slots_with_content
@@ -138,9 +138,9 @@ def test_renders_slots_with_content
 end
 ```
 
-## Action Pack Variants
+## Action Pack 变体
 
-Use the `with_variant` helper to test specific variants:
+使用 `with_variant` 辅助方法测试特定变体：
 
 ```ruby
 def test_render_component_for_tablet
@@ -152,9 +152,9 @@ def test_render_component_for_tablet
 end
 ```
 
-## Request formats
+## 请求格式
 
-Use the `with_format` helper to test specific request formats:
+使用 `with_format` 辅助方法测试特定请求格式：
 
 ```ruby
 def test_render_component_as_json
@@ -166,12 +166,12 @@ def test_render_component_as_json
 end
 ```
 
-## Configuring the controller used in tests
+## 配置测试中使用的控制器
 
 Since 2.27.0
 {: .label }
 
-Component tests assume the existence of an `ApplicationController` class. To set the controller for a test file, define `vc_test_controller_class`:
+组件测试会假定存在 `ApplicationController` 类。要为某个测试文件设置控制器，请定义 `vc_test_controller_class`：
 
 ```ruby
 class ExampleComponentTest < ViewComponent::TestCase
@@ -187,7 +187,7 @@ class ExampleComponentTest < ViewComponent::TestCase
 end
 ```
 
-To configure the controller used for a test case, use `with_controller_class` from `ViewComponent::TestHelpers`.
+要为某个测试用例配置所使用的控制器，请使用 `ViewComponent::TestHelpers` 中的 `with_controller_class`。
 
 ```ruby
 class ExampleComponentTest < ViewComponent::TestCase
@@ -209,67 +209,67 @@ class ExampleComponentTest < ViewComponent::TestCase
 end
 ```
 
-## Setting `request.path_parameters`
+## 设置 `request.path_parameters`
 
 Since 2.31.0
 {: .label }
 
-Some Rails helpers won't work unless `request.path_parameters` are set correctly, resulting in an `ActionController::UrlGenerationError`.
+某些 Rails 辅助方法在 `request.path_parameters` 未正确设置时无法工作，会导致 `ActionController::UrlGenerationError`。
 
-To set `request.path_parameters` for a test case, use `with_request_url` from `ViewComponent::TestHelpers`:
+要为某个测试用例设置 `request.path_parameters`，请使用 `ViewComponent::TestHelpers` 中的 `with_request_url`：
 
 ```ruby
 class ExampleComponentTest < ViewComponent::TestCase
   def test_with_request_url
     with_request_url "/products/42" do
-      render_inline ExampleComponent.new # contains i.e. `link_to "French", url_for(locale: "fr")`
+      render_inline ExampleComponent.new # 其中包含例如 `link_to "French", url_for(locale: "fr")`
       assert_link "French", href: "/products/42?locale=fr"
     end
   end
 end
 ```
 
-## Setting `request.host`
+## 设置 `request.host`
 
 Since 3.3.0
 {: .label }
 
-Rails routes that have a subdomain constraint require `request.host` to be set correctly.
+带有子域名约束的 Rails 路由要求 `request.host` 被正确设置。
 
-To set `request.host` for a test case, use `with_request_url` from `ViewComponent::TestHelpers`:
+要为某个测试用例设置 `request.host`，请使用 `ViewComponent::TestHelpers` 中的 `with_request_url`：
 
 ```ruby
 class ExampleComponentTest < ViewComponent::TestCase
   def test_with_request_url
     with_request_url "/products/42", host: "app.example.com" do
-      render_inline ExampleComponent.new # contains i.e. `products_path` that is constrained to the 'app' subdomain
+      render_inline ExampleComponent.new # 其中包含例如受 'app' 子域名约束的 `products_path`
       assert_link "Products", href: "/products"
     end
   end
 end
 ```
 
-### Query parameters
+### 查询参数
 
 Since 2.41.0
 {: .label }
 
-It's also possible to set query parameters:
+也可以设置查询参数：
 
 ```ruby
 class ExampleComponentTest < ViewComponent::TestCase
   def test_with_request_url
     with_request_url "/products/42?locale=en" do
-      render_inline ExampleComponent.new # contains i.e. `link_to "Recent", url_for(request.query_parameters.merge(filter: "recent"))`
+      render_inline ExampleComponent.new # 其中包含例如 `link_to "Recent", url_for(request.query_parameters.merge(filter: "recent"))`
       assert_link "Recent", href: "/?locale=en&filter=recent"
     end
   end
 end
 ```
 
-## RSpec configuration
+## RSpec 配置
 
-To use RSpec, add the following:
+要使用 RSpec，请添加如下内容：
 
 ```ruby
 # spec/rails_helper.rb
@@ -284,7 +284,7 @@ RSpec.configure do |config|
 end
 ```
 
-To access Devise's controller helper methods in tests, add the following:
+要在测试中访问 Devise 的控制器辅助方法，请添加如下内容：
 
 ```ruby
 RSpec.configure do |config|
@@ -296,7 +296,7 @@ RSpec.configure do |config|
 end
 ```
 
-Specs created by the generator have access to test helpers like `render_inline`. For example:
+由生成器创建的 spec 可以使用诸如 `render_inline` 之类的测试辅助方法。例如：
 
 ```ruby
 require "rails_helper"
@@ -306,22 +306,22 @@ RSpec.describe ExampleComponent, type: :component do
     render_inline(described_class.new(title: "my title")) { "Hello, World!" }
 
     expect(page).to have_css "span[title='my title']", text: "Hello, World!"
-    # or, to just assert against the text
+    # 或者只断言文本
     expect(page).to have_text "Hello, World!"
   end
 end
 ```
 
-To use component previews:
+要使用组件预览：
 
 ```ruby
 # config/application.rb
 config.view_component.previews.paths << "#{Rails.root}/spec/components/previews"
 ```
 
-## Component system tests
+## 组件系统测试
 
-Use `with_rendered_component_path` with `render_inline` to system test components:
+将 `with_rendered_component_path` 与 `render_inline` 配合使用，对组件进行系统测试：
 
 ```rb
 class ViewComponentSystemTest < ViewComponent::SystemTestCase
@@ -337,7 +337,7 @@ class ViewComponentSystemTest < ViewComponent::SystemTestCase
 end
 ```
 
-For components that depend on a layout, provide the `layout` argument:
+对于依赖布局的组件，请提供 `layout` 参数：
 
 ```rb
 class ViewComponentSystemTest < ViewComponent::SystemTestCase

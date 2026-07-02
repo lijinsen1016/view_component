@@ -1,8 +1,8 @@
 ---
 layout: default
-title: How-to guide
+title: 使用指南
 nav_order: 2
 has_children: true
 ---
 
-# How-to guide
+# 使用指南

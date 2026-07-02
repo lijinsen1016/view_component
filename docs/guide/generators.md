@@ -1,14 +1,14 @@
 ---
 layout: default
-title: Generators
-parent: How-to guide
+title: 生成器
+parent: 使用指南
 ---
 
-# Generators
+# 生成器
 
-The generator accepts a component name and a list of arguments.
+生成器接受一个组件名和一组参数。
 
-To create an `ExampleComponent` with `title` and `content` attributes:
+要创建一个带有 `title` 和 `content` 属性的 `ExampleComponent`：
 
 ```console
 bin/rails generate view_component:component Example title content
@@ -20,9 +20,9 @@ bin/rails generate view_component:component Example title content
       create    app/components/example_component.html.erb
 ```
 
-## Generating namespaced components
+## 生成命名空间下的组件
 
-To generate a namespaced `Sections::ExampleComponent`:
+要生成一个命名空间下的 `Sections::ExampleComponent`：
 
 ```console
 bin/rails generate view_component:component Sections::Example title content
@@ -34,11 +34,11 @@ bin/rails generate view_component:component Sections::Example title content
       create    app/components/sections/example_component.html.erb
 ```
 
-## Options
+## 选项
 
-You can specify options when running the generator. To alter the default values project-wide, define the configuration settings described in [API docs](/api.html#configuration).
+运行生成器时可以指定选项。要全局修改默认值，请定义 [API 文档](/api.html#configuration)中所述的配置项。
 
-Generated ViewComponents are added to `app/components` by default. Set `config.view_component.generate.path` to use a different path.
+生成的 ViewComponent 默认会被添加到 `app/components`。设置 `config.view_component.generate.path` 可使用其他路径。
 
 ```ruby
 # config/application.rb
@@ -46,9 +46,9 @@ config.view_component.generate.path = "app/views/components"
 config.eager_load_paths << Rails.root.join("app/views/components")
 ```
 
-### Override template engine
+### 覆盖模板引擎
 
-ViewComponent includes template generators for the `erb`, `haml`, and `slim` template engines and will default to the template engine specified in `config.generators.template_engine`.
+ViewComponent 内置了 `erb`、`haml` 和 `slim` 三种模板引擎的生成器，默认使用 `config.generators.template_engine` 所指定的模板引擎。
 
 ```console
 bin/rails generate view_component:component Example title --template-engine slim
@@ -60,9 +60,9 @@ bin/rails generate view_component:component Example title --template-engine slim
       create    app/components/example_component.html.slim
 ```
 
-### Override test framework
+### 覆盖测试框架
 
-By default, `config.generators.test_framework` is used.
+默认使用 `config.generators.test_framework`。
 
 ```console
 bin/rails generate view_component:component Example title --test-framework rspec
@@ -74,7 +74,7 @@ bin/rails generate view_component:component Example title --test-framework rspec
       create    app/components/example_component.html.erb
 ```
 
-### Generate a [preview](/guide/previews.html)
+### 生成 [预览](/guide/previews.html)
 
 Since 2.25.0
 {: .label }
@@ -91,7 +91,7 @@ bin/rails generate view_component:component Example title --preview
       create    app/components/example_component.html.erb
 ```
 
-### Generate a [Stimulus controller](/guide/javascript_and_css.html#stimulus)
+### 生成 [Stimulus 控制器](/guide/javascript_and_css.html#stimulus)
 
 Since 2.38.0
 {: .label }
@@ -108,14 +108,14 @@ bin/rails generate view_component:component Example title --stimulus
       create    app/components/example_component.html.erb
 ```
 
-To always generate a Stimulus controller, set `config.view_component.generate.stimulus_controller = true`.
+要总是生成 Stimulus 控制器，请设置 `config.view_component.generate.stimulus_controller = true`。
 
-To generate a TypeScript controller instead of a JavaScript controller, either:
+要生成 TypeScript 控制器而非 JavaScript 控制器，可以：
 
-- Pass the `--typescript` option
-- Set `config.view_component.generate.typescript = true`
+- 传入 `--typescript` 选项
+- 设置 `config.view_component.generate.typescript = true`
 
-### Generate [locale files](/guide/translations.html)
+### 生成 [本地化文件](/guide/translations.html)
 
 Since 2.47.0
 {: .label }
@@ -132,11 +132,11 @@ bin/rails generate view_component:component Example title --locale
       create    app/components/example_component.html.erb
 ```
 
-To always generate locale files, set `config.view_component.generate.locale = true`.
+要总是生成本地化文件，请设置 `config.view_component.generate.locale = true`。
 
-To generate translations in distinct locale files, set `config.view_component.generate.distinct_locale_files = true` to generate as many files as configured in `I18n.available_locales`.
+若要生成分立的本地化文件，请设置 `config.view_component.generate.distinct_locale_files = true`，会按 `I18n.available_locales` 中配置的每种语言各生成一个文件。
 
-### Place the view in a sidecar directory
+### 将视图放入伴生目录
 
 Since 2.16.0
 {: .label }
@@ -151,9 +151,9 @@ bin/rails generate view_component:component Example title --sidecar
       create    app/components/example_component/example_component.html.erb
 ```
 
-To always generate in the sidecar directory, set `config.view_component.generate.sidecar = true`.
+要总是在伴生目录中生成，请设置 `config.view_component.generate.sidecar = true`。
 
-### Use [inline template](/guide/templates.html#inline) (no template file)
+### 使用 [内联模板](/guide/templates.html#inline)（无模板文件）
 
 ```console
 bin/rails generate view_component:component Example title --inline
@@ -164,7 +164,7 @@ bin/rails generate view_component:component Example title --inline
       invoke  erb
 ```
 
-### Use [call method](/guide/templates.html#call) (no template file)
+### 使用 [call 方法](/guide/templates.html#call)（无模板文件）
 
 ```console
 bin/rails generate view_component:component Example title --call
@@ -175,12 +175,12 @@ bin/rails generate view_component:component Example title --call
       invoke  erb
 ```
 
-### Specify the parent class
+### 指定父类
 
 Since 2.41.0
 {: .label }
 
-By default, `ApplicationComponent` is used if defined, `ViewComponent::Base` otherwise.
+默认情况下，若定义了 `ApplicationComponent` 则使用之，否则使用 `ViewComponent::Base`。
 
 ```console
 bin/rails generate view_component:component Example title content --parent MyBaseComponent
@@ -192,8 +192,8 @@ bin/rails generate view_component:component Example title content --parent MyBas
       create    app/components/example_component.html.erb
 ```
 
-To always use a specific parent class, set `config.view_component.parent_class = "MyBaseComponent"`.
+要始终使用特定的父类，请设置 `config.view_component.parent_class = "MyBaseComponent"`。
 
-### Skip collision check
+### 跳过命名冲突检查
 
-The generator prevents naming collisions with existing components. To skip this check and force the generator to run, use the `--skip-collision-check` or `--force` option.
+生成器会防止与已有组件重名而发生冲突。要跳过该检查并强制运行生成器，请使用 `--skip-collision-check` 或 `--force` 选项。

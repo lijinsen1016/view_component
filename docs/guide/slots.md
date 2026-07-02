@@ -1,24 +1,24 @@
 ---
 layout: default
-title: Slots
-parent: How-to guide
+title: 插槽
+parent: 使用指南
 ---
 
-# Slots
+# 插槽
 
 Since 2.12.0
 {: .label }
 
-In addition to the `content` accessor, ViewComponents can accept content through slots. Think of slots as a way to render multiple blocks of content, including other components.
+除了 `content` 访问器之外，ViewComponent 还可以通过插槽（slots）接收内容。可以把插槽理解为一种渲染多块内容（包括其他组件）的方式。
 
-Slots are defined with `renders_one` and `renders_many`:
+插槽通过 `renders_one` 和 `renders_many` 来定义：
 
-- `renders_one` defines a slot that will be rendered at most once per component: `renders_one :header`
-- `renders_many` defines a slot that can be rendered multiple times per-component: `renders_many :posts`
+- `renders_one` 定义每个组件最多渲染一次的插槽：`renders_one :header`
+- `renders_many` 定义每个组件可多次渲染的插槽：`renders_many :posts`
 
-If a second argument isn't provided to these methods, a **passthrough slot** is registered. Any content passed through can be rendered inside these slots without restriction.
+如果这两个方法没有提供第二个参数，则会注册一个**透传插槽（passthrough slot）**。传入的任何内容都可以在这些插槽中无限制地渲染。
 
-For example:
+例如：
 
 ```ruby
 # blog_component.rb
@@ -28,9 +28,9 @@ class BlogComponent < ViewComponent::Base
 end
 ```
 
-To render a `renders_one` slot, call the name of the slot.
+要渲染 `renders_one` 插槽，调用该插槽的名称即可。
 
-To render a `renders_many` slot, iterate over the name of the slot:
+要渲染 `renders_many` 插槽，对该插槽的名称进行迭代：
 
 ```erb
 <%# blog_component.html.erb %>
@@ -56,7 +56,7 @@ To render a `renders_many` slot, iterate over the name of the slot:
 <% end %>
 ```
 
-Returning:
+返回：
 
 ```erb
 <h1><a href="/">My blog</a></h1>
@@ -65,12 +65,12 @@ Returning:
 <a href="/blog/second-post">Second post</a>
 ```
 
-## Predicate methods
+## 谓词方法
 
 Since 2.50.0
 {: .label }
 
-To test whether a slot has been passed to the component, use the provided `#{slot_name}?` method.
+要判断某个插槽是否已被传入组件，请使用提供的 `#{slot_name}?` 方法。
 
 ```erb
 <%# blog_component.html.erb %>
@@ -89,20 +89,20 @@ To test whether a slot has been passed to the component, use the provided `#{slo
 <% end %>
 ```
 
-## Component slots
+## 组件插槽
 
-Slots can also render other components. Pass the name of a component as the second argument to define a component slot.
+插槽也可以渲染其他组件。将组件名作为第二个参数传入，即可定义组件插槽。
 
-Arguments passed when calling a component slot will be used to initialize the component and render it. A block can also be passed to set the component's content.
+调用组件插槽时传入的参数会用于初始化该组件并将其渲染。还可以传入一个 block 来设置组件的内容。
 
 ```ruby
 # blog_component.rb
 class BlogComponent < ViewComponent::Base
-  # Since `HeaderComponent` is nested inside of this component, we have to
-  # reference it as a string instead of a class name.
+  # 由于 `HeaderComponent` 嵌套在本组件内部，
+  # 我们必须以字符串形式引用它，而不是使用类名。
   renders_one :header, "HeaderComponent"
 
-  # `PostComponent` is defined in another file, so we can refer to it by class name.
+  # `PostComponent` 定义在另一个文件中，因此可以用类名引用它。
   renders_many :posts, PostComponent
 
   class HeaderComponent < ViewComponent::Base
@@ -145,9 +145,9 @@ end
 <% end %>
 ```
 
-## Referencing slots
+## 引用插槽
 
-As the content passed to slots is registered after a component is initialized, it can't be referenced in an initializer. One way to reference slot content is using the `before_render` [lifecycle method](/guide/lifecycle):
+由于传给插槽的内容是在组件初始化之后才注册的，因此不能在初始化方法中引用插槽内容。引用插槽内容的一种方式是使用 `before_render` [生命周期方法](/guide/lifecycle)：
 
 ```ruby
 # blog_component.rb
@@ -171,29 +171,29 @@ end
 <% end %>
 ```
 
-## Lambda slots
+## Lambda 插槽
 
-It's also possible to define a slot as a lambda that returns content to be rendered (either a string or a ViewComponent instance). Lambda slots are useful in cases where writing another component may be unnecessary, such as working with helpers like `content_tag` or as wrappers for another ViewComponent with specific default values:
+也可以将插槽定义为一个返回待渲染内容（字符串或 ViewComponent 实例）的 lambda。在编写独立组件可能并不必要时，lambda 插槽会很有用，例如配合 `content_tag` 这类辅助方法使用，或用作带特定默认值的另一个 ViewComponent 的包装器：
 
 ```ruby
 class BlogComponent < ViewComponent::Base
   renders_one :header, ->(classes:) do
-    # This isn't complex enough to be its own component yet, so we'll use a
-    # lambda slot. If it gets much bigger, it should be extracted out to a
-    # ViewComponent and rendered here with a component slot.
+    # 这部分逻辑目前还不够复杂，不足以成为独立组件，
+    # 所以我们使用 lambda 插槽。如果它变得更复杂，
+    # 就应该被抽取为独立的 ViewComponent，并通过组件插槽在此渲染。
     content_tag :h1 do
       link_to title, root_path, {class: classes}
     end
   end
 
-  # It's also possible to return another ViewComponent with preset default values:
+  # 也可以返回一个带有预设默认值的另一个 ViewComponent：
   renders_many :posts, ->(title:, classes:) do
     PostComponent.new(title: title, classes: "my-default-class " + classes)
   end
 end
 ```
 
-Lambda slots are able to access state from the parent ViewComponent:
+lambda 插槽能够访问父级 ViewComponent 的状态：
 
 ```ruby
 class TableComponent < ViewComponent::Base
@@ -207,7 +207,7 @@ class TableComponent < ViewComponent::Base
 end
 ```
 
-To provide content for a lambda slot via a block, add a block parameter. Render the content by calling the block's `call` method, or by passing the block directly to `content_tag`:
+要通过 block 为 lambda 插槽提供内容，请添加一个 block 参数。通过调用该 block 的 `call` 方法来渲染内容，或将该 block 直接传给 `content_tag`：
 
 ```ruby
 class BlogComponent < ViewComponent::Base
@@ -217,14 +217,14 @@ class BlogComponent < ViewComponent::Base
 end
 ```
 
-_Note: While a lambda is called when the `with_*` method is called, a returned component isn't rendered until first use._
+_注意：虽然 lambda 会在调用 `with_*` 方法时被调用，但返回的组件直到首次使用时才会被渲染。_
 
-## Rendering collections
+## 渲染集合
 
 Since 2.23.0
 {: .label }
 
-`renders_many` slots can also be passed a collection, using the plural setter (`links` in this example):
+`renders_many` 插槽还可以使用复数形式的 setter（本例中为 `links`）传入一个集合：
 
 ```ruby
 # navigation_component.rb
@@ -263,7 +263,7 @@ end
 Since 3.0.0
 {: .label }
 
-Assuming no arguments need to be passed to the slot, slot content can be set with `#with_SLOT_NAME_content`:
+如果不需要向插槽传递参数，可以使用 `#with_SLOT_NAME_content` 来设置插槽内容：
 
 ```erb
 <%= render(BlogComponent.new.with_header_content("My blog")) %>
@@ -274,7 +274,7 @@ Assuming no arguments need to be passed to the slot, slot content can be set wit
 Since 2.31.0
 {: .label }
 
-Slot content can also be set using `#with_content`:
+也可以使用 `#with_content` 来设置插槽内容：
 
 ```erb
 <%= render BlogComponent.new do |component| %>
@@ -282,14 +282,14 @@ Slot content can also be set using `#with_content`:
 <% end %>
 ```
 
-## Polymorphic slots
+## 多态插槽
 
 Since 2.42.0
 {: .label }
 
-Polymorphic slots can render one of several possible slots.
+多态插槽可以渲染若干可能插槽中的一种。
 
-For example, consider this list item component that can be rendered with either an icon or an avatar visual. The `visual` slot is passed a hash mapping types to slot definitions:
+例如，考虑这样一个列表项组件，它可以带图标或头像作为可视化元素来渲染。`visual` 插槽接收一个将类型映射到插槽定义的哈希：
 
 ```ruby
 class ListItemComponent < ViewComponent::Base
@@ -302,9 +302,9 @@ class ListItemComponent < ViewComponent::Base
 end
 ```
 
-**Note**: the `types` hash's values can be any valid slot definition, including a component class, string, or lambda.
+**注意**：`types` 哈希的值可以是任何合法的插槽定义，包括组件类、字符串或 lambda。
 
-Filling in the `visual` slot is done by calling the appropriate slot method:
+填充 `visual` 插槽通过调用相应的插槽方法来完成：
 
 ```erb
 <%= render ListItemComponent.new do |component| %>
@@ -319,7 +319,7 @@ Filling in the `visual` slot is done by calling the appropriate slot method:
 <% end %>
 ```
 
-To see whether a polymorphic slot has been passed to the component, use the `#{slot_name}?` method.
+要判断某个多态插槽是否已被传入组件，请使用 `#{slot_name}?` 方法。
 
 ```erb
 <% if visual? %>
@@ -329,12 +329,12 @@ To see whether a polymorphic slot has been passed to the component, use the `#{s
 <% end %>
 ```
 
-### Custom polymorphic slot setters
+### 自定义多态插槽 setter
 
 Since 3.1.0
 {: .label }
 
-Customize slot setters by specifying a nested hash for the `type` value:
+通过为 `type` 的值指定一个嵌套哈希，可以自定义插槽 setter：
 
 ```ruby
 class ListItemComponent < ViewComponent::Base
@@ -348,14 +348,14 @@ class ListItemComponent < ViewComponent::Base
 end
 ```
 
-The setters are now `#with_icon_visual` and `#with_avatar_visual` instead of the default `#with_visual_icon` and `#with_visual_avatar`. The slot getter remains `#visual`.
+此时 setter 变为 `#with_icon_visual` 和 `#with_avatar_visual`，而非默认的 `#with_visual_icon` 和 `#with_visual_avatar`。插槽的 getter 仍为 `#visual`。
 
 ## `#default_SLOT_NAME`
 
 Since 4.0.0
 {: .label }
 
-To provide a default value for a slot, define a `default_SLOT_NAME` method:
+要为插槽提供默认值，请定义 `default_SLOT_NAME` 方法：
 
 ```ruby
 class SlotableDefaultComponent < ViewComponent::Base
@@ -367,7 +367,7 @@ class SlotableDefaultComponent < ViewComponent::Base
 end
 ```
 
-`default_SLOT_NAME` can also return a component instance to be rendered:
+`default_SLOT_NAME` 也可以返回一个待渲染的组件实例：
 
 ```ruby
 class SlotableDefaultInstanceComponent < ViewComponent::Base
